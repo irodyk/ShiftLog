@@ -1,5 +1,15 @@
 apply plugin: 'com.android.application'
 
+def espresso = '2.2.2'
+def supportLib = '26.0.2'
+def playServices = '11.0.4'
+def gson = '2.8.0'
+def dagger2 = '2.4'
+def leakCanary = '1.5'
+def butterknife = '8.5.1'
+def rxJava2 = '2.0.1'
+def junit = '4.12'
+
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
@@ -21,9 +31,37 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.0.2'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
+
+    //espresso
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$espresso", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    //support lib
+    implementation "com.android.support:appcompat-v7:$supportLib"
+
+    //google maps
+    implementation "com.google.android.gms:play-services-maps:$playServices"
+
+    //gson lib
+    implementation "com.google.code.gson:gson:$gson"
+
+    //dagger 2
+    implementation "com.google.dagger:dagger:$dagger2"
+    annotationProcessor "com.google.dagger:dagger-compiler:$dagger2"
+
+    //leakcanary
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanary"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanary"
+    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanary"
+
+    //ButterKnife
+    implementation "com.jakewharton:butterknife:$butterknife"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife"
+
+    //RxJava2
+    implementation "io.reactivex.rxjava2:rxandroid:$rxJava2"
+    implementation "io.reactivex.rxjava2:rxjava:$rxJava2"
+
+    testImplementation "junit:junit:$junit"
 }
