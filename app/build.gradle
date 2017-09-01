@@ -24,13 +24,13 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "BASE_URL", '"https://apjoqdqpi3.execute-api.us-west-2.amazonaws.com/"'
-            buildConfigField "String", "SHA1", "cee699d9c1b5656099e63b433790af2a3cd5027e"
+            buildConfigField "String", "SHA1", '"cee699d9c1b5656099e63b433790af2a3cd5027e"'
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "BASE_URL", '"https://apjoqdqpi3.execute-api.us-west-2.amazonaws.com/"'
-            buildConfigField "String", "SHA1", "cee699d9c1b5656099e63b433790af2a3cd5027e"
+            buildConfigField "String", "SHA1", '"cee699d9c1b5656099e63b433790af2a3cd5027e"'
         }
     }
 }
