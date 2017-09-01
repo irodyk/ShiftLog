@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 def espresso = '2.2.2'
 def supportLib = '26.0.2'
-def playServices = '11.0.4'
+def playServices = '11.2.0'
 def gson = '2.8.0'
 def dagger2 = '2.4'
 def leakCanary = '1.5'
@@ -22,9 +22,15 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField "String", "BASE_URL", '"https://apjoqdqpi3.execute-api.us-west-2.amazonaws.com/"'
+            buildConfigField "String", "SHA1", "cee699d9c1b5656099e63b433790af2a3cd5027e"
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "BASE_URL", '"https://apjoqdqpi3.execute-api.us-west-2.amazonaws.com/"'
+            buildConfigField "String", "SHA1", "cee699d9c1b5656099e63b433790af2a3cd5027e"
         }
     }
 }
