@@ -1,6 +1,6 @@
 package com.deputy.shiftlog.data.repository.database;
 
-import com.deputy.shiftlog.domain.model.Shift;
+import com.deputy.shiftlog.model.Shift;
 
 import java.util.ArrayList;
 
@@ -42,4 +42,8 @@ public interface ShiftLocalDataStore {
      */
     Observable<Boolean> recreate(ArrayList<Shift> shifts);
 
+    /**
+     * Returns all shifts, which were not synced.
+     */
+    Observable<ArrayList<Shift>> queryAllSync();
 }

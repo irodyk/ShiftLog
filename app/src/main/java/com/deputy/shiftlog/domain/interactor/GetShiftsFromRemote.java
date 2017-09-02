@@ -1,11 +1,10 @@
 package com.deputy.shiftlog.domain.interactor;
 
 import com.deputy.shiftlog.domain.executor.PostExecutionThread;
-import com.deputy.shiftlog.domain.model.Shift;
+import com.deputy.shiftlog.model.Shift;
 import com.deputy.shiftlog.domain.repository.ShiftRemoteRepository;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;

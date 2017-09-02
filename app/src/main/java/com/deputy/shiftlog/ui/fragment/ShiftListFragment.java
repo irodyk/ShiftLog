@@ -23,7 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.deputy.shiftlog.R;
-import com.deputy.shiftlog.domain.model.Shift;
+import com.deputy.shiftlog.model.Shift;
 import com.deputy.shiftlog.presentation.ShiftListPresenter;
 import com.deputy.shiftlog.presentation.ShiftPostPresenter;
 import com.deputy.shiftlog.ui.adapter.ShiftAdapter;

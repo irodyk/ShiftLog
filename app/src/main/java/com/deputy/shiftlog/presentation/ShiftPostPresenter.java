@@ -6,7 +6,7 @@ import com.deputy.shiftlog.domain.interactor.EndShiftRemote;
 import com.deputy.shiftlog.domain.interactor.StartShiftLocal;
 import com.deputy.shiftlog.domain.interactor.StartShiftRemote;
 import com.deputy.shiftlog.domain.interactor.StoreShiftForUpdate;
-import com.deputy.shiftlog.domain.model.Shift;
+import com.deputy.shiftlog.model.Shift;
 import com.deputy.shiftlog.ui.view.ShiftUpdateView;
 
 import java.util.ArrayList;

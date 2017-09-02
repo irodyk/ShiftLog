@@ -1,10 +1,14 @@
 package com.deputy.shiftlog.data.repository.database;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.deputy.shiftlog.domain.model.Shift;
+import com.deputy.shiftlog.data.mapper.ShiftCursorMapper;
+import com.deputy.shiftlog.model.Shift;
 
 import java.util.ArrayList;
 
@@ -39,40 +43,139 @@ public class DatabaseManager implements ShiftLocalDataStore {
 
     public static final String SYNC_COLUMN_SHIFT_ID = "shift_id";
 
+    private ShiftCursorMapper shiftCursorMapper;
 
     private DbHelper dbHelper;
 
     @Inject
-    DatabaseManager(Context context){
+    DatabaseManager(Context context, ShiftCursorMapper shiftCursorMapper){
+        this.shiftCursorMapper = shiftCursorMapper;
         dbHelper = new DbHelper(context);
     }
 
-
-
-
     @Override
     public Observable<ArrayList<Shift>> shiftList() {
-        return null;
+        return Observable.fromArray(queryAllShifts(null));
     }
 
     @Override
     public Observable<Void> create(Shift shift) {
-        return null;
+        if(shift != null){
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(SHIFTS_COLUMN_START_TIME, String.valueOf(shift.getStartTime()));
+            contentValues.put(SHIFTS_COLUMN_START_LAT, String.valueOf(shift.getStartLatitude()));
+            contentValues.put(SHIFTS_COLUMN_START_LNG, String.valueOf(shift.getStartLongitude()));
+            contentValues.put(SHIFTS_COLUMN_IMAGE_URL, String.valueOf(shift.getImageUrl()));
+
+            db.insert(SHIFTS_TABLE_NAME, null, contentValues);
+
+            db.close();
+        }
+        return Observable.empty();
     }
 
     @Override
     public Observable<Void> end(Shift shift) {
-        return null;
-    }
+        if(shift != null){
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-    @Override
-    public Observable<Boolean> storeSync(Shift shift) {
-        return null;
+            String query = "SELECT last_insert_rowid()";
+            Cursor c = db.rawQuery(query, null);
+
+            long lastId = -1;
+
+            if (c != null && c.moveToFirst()) {
+                lastId = c.getLong(0);
+                c.close();
+            }
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(SHIFTS_COLUMN_END_TIME, String.valueOf(shift.getStartTime()));
+            contentValues.put(SHIFTS_COLUMN_END_LAT, String.valueOf(shift.getStartLatitude()));
+            contentValues.put(SHIFTS_COLUMN_END_LNG, String.valueOf(shift.getStartLongitude()));
+
+            db.update(SHIFTS_TABLE_NAME, contentValues, COMMON_COLUMN_ID+"="+lastId, null);
+
+            db.close();
+        }
+        return Observable.empty();
     }
 
     @Override
     public Observable<Boolean> recreate(ArrayList<Shift> shifts) {
-        return null;
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete(SHIFTS_TABLE_NAME, null, null);
+
+        boolean result = true;
+
+        for(Shift shift : shifts){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(SHIFTS_COLUMN_END_TIME, String.valueOf(shift.getStartTime()));
+            contentValues.put(SHIFTS_COLUMN_END_LAT, String.valueOf(shift.getStartLatitude()));
+            contentValues.put(SHIFTS_COLUMN_END_LNG, String.valueOf(shift.getStartLongitude()));
+            contentValues.put(SHIFTS_COLUMN_END_TIME, String.valueOf(shift.getStartTime()));
+            contentValues.put(SHIFTS_COLUMN_END_LAT, String.valueOf(shift.getStartLatitude()));
+            contentValues.put(SHIFTS_COLUMN_END_LNG, String.valueOf(shift.getStartLongitude()));
+            contentValues.put(SHIFTS_COLUMN_IMAGE_URL, String.valueOf(shift.getImageUrl()));
+            contentValues.put(SHIFTS_COLUMN_IMAGE_PATH, String.valueOf(shift.getImagePath()));
+
+            boolean isInserted = db.insert(SHIFTS_TABLE_NAME, null, contentValues) != -1;
+
+            result = result && isInserted;
+        }
+
+        db.close();
+
+        return Observable.just(result);
+    }
+
+    @Override
+    public Observable<Boolean> storeSync(Shift shift) {
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(SYNC_COLUMN_SHIFT_ID, shift.getId());
+        boolean result = db.insert(SYNC_TABLE_NAME, null, contentValues) != -1;
+
+        db.close();
+        return Observable.just(result);
+    }
+
+    @Override
+    public Observable<ArrayList<Shift>> queryAllSync() {
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        Cursor cursor = db.query(SYNC_TABLE_NAME, null, null,
+                null, null, null, null);
+
+        String ids = shiftCursorMapper.transformShiftIds(cursor);
+        cursor.close();
+
+        ArrayList<Shift> shifts = queryAllShifts(ids);
+
+        db.delete(SYNC_TABLE_NAME, null, null);
+        db.close();
+        return Observable.fromArray(shifts);
+    }
+
+    private ArrayList<Shift> queryAllShifts(String ids) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = null;
+        if(ids == null){
+            cursor = db.query(SHIFTS_TABLE_NAME, null, null,
+                    null, null, null, null);
+        }else{
+            cursor = db.query(SHIFTS_TABLE_NAME, null, COMMON_COLUMN_ID+" IN("+ids+")",
+                    null, null, null, null);
+        }
+
+        ArrayList<Shift> shifts =  shiftCursorMapper.transformShiftCollection(cursor);
+        cursor.close();
+        db.close();
+        return shifts;
     }
 
 

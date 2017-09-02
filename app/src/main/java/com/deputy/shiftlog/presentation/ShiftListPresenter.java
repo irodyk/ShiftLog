@@ -4,7 +4,7 @@ import com.deputy.shiftlog.domain.interactor.DataObserver;
 import com.deputy.shiftlog.domain.interactor.GetShiftsFromLocal;
 import com.deputy.shiftlog.domain.interactor.GetShiftsFromRemote;
 import com.deputy.shiftlog.domain.interactor.StoreAllShiftsLocally;
-import com.deputy.shiftlog.domain.model.Shift;
+import com.deputy.shiftlog.model.Shift;
 import com.deputy.shiftlog.ui.view.ShiftListView;
 
 import java.util.ArrayList;

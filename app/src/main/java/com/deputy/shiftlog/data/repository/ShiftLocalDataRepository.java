@@ -1,7 +1,7 @@
 package com.deputy.shiftlog.data.repository;
 
 import com.deputy.shiftlog.data.repository.database.ShiftLocalDataStore;
-import com.deputy.shiftlog.domain.model.Shift;
+import com.deputy.shiftlog.model.Shift;
 import com.deputy.shiftlog.domain.repository.ShiftLocalRepository;
 
 import java.util.ArrayList;

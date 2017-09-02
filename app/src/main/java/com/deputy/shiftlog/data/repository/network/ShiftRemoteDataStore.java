@@ -1,6 +1,6 @@
 package com.deputy.shiftlog.data.repository.network;
 
-import com.deputy.shiftlog.domain.model.Shift;
+import com.deputy.shiftlog.model.Shift;
 
 import java.util.ArrayList;
 

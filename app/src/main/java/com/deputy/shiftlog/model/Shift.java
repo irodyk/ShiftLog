@@ -1,4 +1,4 @@
-package com.deputy.shiftlog.domain.model;
+package com.deputy.shiftlog.model;
 
 import android.graphics.Bitmap;
 import android.os.Parcel;
@@ -9,7 +9,7 @@ import android.os.Parcelable;
  * Created by Iurii Rodyk on 01.09.2017.
  */
 
-public class Shift implements Parcelable{
+public class Shift implements Parcelable {
 
     private String id;
     private String startTime;
@@ -18,6 +18,8 @@ public class Shift implements Parcelable{
     private String startLongitude;
     private String endtLatitude;
     private String endLongitude;
+    private String imagePath;
+    private String imageUrl;
     private Bitmap image;
 
     public Shift(){
@@ -31,6 +33,8 @@ public class Shift implements Parcelable{
         startLongitude = in.readString();
         endtLatitude = in.readString();
         endLongitude = in.readString();
+        imagePath = in.readString();
+        imageUrl = in.readString();
         image = in.readParcelable(Bitmap.class.getClassLoader());
     }
 
@@ -102,6 +106,22 @@ public class Shift implements Parcelable{
         this.endLongitude = endLongitude;
     }
 
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public Bitmap getImage() {
         return image;
     }
@@ -124,6 +144,8 @@ public class Shift implements Parcelable{
         parcel.writeString(startLongitude);
         parcel.writeString(endtLatitude);
         parcel.writeString(endLongitude);
+        parcel.writeString(imagePath);
+        parcel.writeString(imageUrl);
         parcel.writeParcelable(image, i);
     }
 }
