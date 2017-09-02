@@ -5,7 +5,6 @@ import com.deputy.shiftlog.domain.model.Shift;
 import com.deputy.shiftlog.ui.view.ShiftListView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -44,7 +43,7 @@ public class ShiftListPresenter implements Presenter {
         //execute a usecase
     }
 
-    private final class ShiftListObserver extends DataObserver<ArrayList<Shift>> {
+    private final class ShiftListObserver extends DataObserver<ArrayList<Shift>, V> {
 
         @Override public void onNext(ArrayList<Shift> shifts) {
             ShiftListPresenter.this.shifts = shifts;

@@ -3,7 +3,10 @@ package com.deputy.shiftlog.di.component;
 import android.content.Context;
 
 import com.deputy.shiftlog.di.module.ApplicationModule;
+import com.deputy.shiftlog.domain.executor.PostExecutionThread;
 import com.deputy.shiftlog.ui.activity.BaseActivity;
+
+import java.util.concurrent.Executor;
 
 import javax.inject.Singleton;
 
@@ -20,4 +23,6 @@ public interface ApplicationComponent {
     void inject(BaseActivity baseActivity);
 
     Context context();
+    PostExecutionThread postExecutionThread();
+    Executor executor();
 }

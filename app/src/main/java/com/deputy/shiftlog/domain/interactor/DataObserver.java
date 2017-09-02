@@ -7,7 +7,7 @@ import io.reactivex.observers.DisposableObserver;
  * Created by Iurii Rodyk on 02.09.2017.
  */
 
-public class DataObserver<T> extends DisposableObserver<T> {
+public class DataObserver<T, V> extends DisposableObserver<T> {
 
     @Override
     public void onNext(T value) {
