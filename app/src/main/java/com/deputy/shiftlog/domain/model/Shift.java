@@ -14,7 +14,6 @@ public class Shift implements Parcelable{
     private String id;
     private String startTime;
     private String endTime;
-    private String duration;
     private String startLatitude;
     private String startLongitude;
     private String endtLatitude;
@@ -28,7 +27,6 @@ public class Shift implements Parcelable{
         id = in.readString();
         startTime = in.readString();
         endTime = in.readString();
-        duration = in.readString();
         startLatitude = in.readString();
         startLongitude = in.readString();
         endtLatitude = in.readString();
@@ -70,14 +68,6 @@ public class Shift implements Parcelable{
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
     }
 
     public String getStartLatitude() {
@@ -130,7 +120,6 @@ public class Shift implements Parcelable{
         parcel.writeString(id);
         parcel.writeString(startTime);
         parcel.writeString(endTime);
-        parcel.writeString(duration);
         parcel.writeString(startLatitude);
         parcel.writeString(startLongitude);
         parcel.writeString(endtLatitude);

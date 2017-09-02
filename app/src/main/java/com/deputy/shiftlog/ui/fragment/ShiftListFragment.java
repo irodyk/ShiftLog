@@ -63,9 +63,6 @@ public class ShiftListFragment extends BaseFragment implements ShiftListView, Sh
     @BindView(R.id.recycler_shift_list) RecyclerView shiftRecycler;
     @BindView(R.id.fab) FloatingActionButton fab;
 
-//    private LocationRequest locationRequest;
-//    private GoogleApiClient googleApiClient;
-
     private boolean isShiftStarted = false;
 
     public ShiftListFragment() {
@@ -153,8 +150,6 @@ public class ShiftListFragment extends BaseFragment implements ShiftListView, Sh
                 return;
             }
         }
-
-//        buildGoogleApiClient();
 
         fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
@@ -245,18 +240,12 @@ public class ShiftListFragment extends BaseFragment implements ShiftListView, Sh
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
             case PERMISSIONS_REQUEST_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    // permission was granted. Do the location-related task you need to do.
                     if (ContextCompat.checkSelfPermission(getActivity(),
                             Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
-
-//                        if (googleApiClient == null) {
-//                            buildGoogleApiClient();
-//                        }
 
                         //call it again to complete the action
                         startStopShift();
@@ -268,15 +257,6 @@ public class ShiftListFragment extends BaseFragment implements ShiftListView, Sh
             }
         }
     }
-
-//    protected synchronized void buildGoogleApiClient() {
-//        googleApiClient = new GoogleApiClient.Builder(getActivity())
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
-//                .addApi(LocationServices.API)
-//                .build();
-//        googleApiClient.connect();
-//    }
 
     @Override public void onDestroyView() {
         super.onDestroyView();
