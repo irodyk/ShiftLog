@@ -16,4 +16,10 @@ public interface ShiftListView {
      * @param shifts - loaded shifts;
      */
     void renderShiftListView(ArrayList<Shift> shifts);
+
+    /**
+     * Delivers success/failure result on local database update after fetching from a remote.
+     * @param isUpdated - true if operation successful.
+     */
+    void onLocalDataOverridden(boolean isUpdated);
 }

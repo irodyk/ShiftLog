@@ -2,6 +2,7 @@ package com.deputy.shiftlog.ui.fragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.Toast;
 
 import com.deputy.shiftlog.di.component.ShiftComponent;
 import com.deputy.shiftlog.ui.activity.MainActivity;
@@ -12,6 +13,10 @@ import com.deputy.shiftlog.ui.activity.MainActivity;
  */
 
 public abstract class BaseFragment extends Fragment {
+
+    protected void showToastMessage(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
 
     protected void replaceFragment(int containerViewId, Fragment fragment) {
         FragmentTransaction fragmentTransaction =

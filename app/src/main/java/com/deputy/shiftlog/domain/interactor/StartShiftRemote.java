@@ -4,8 +4,6 @@ import com.deputy.shiftlog.domain.executor.PostExecutionThread;
 import com.deputy.shiftlog.domain.model.Shift;
 import com.deputy.shiftlog.domain.repository.ShiftRemoteRepository;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
@@ -17,19 +15,19 @@ import io.reactivex.Observable;
  * Created by Iurii Rodyk on 02.09.2017.
  */
 
-public class GetShiftsFromRemote extends UseCase<ArrayList<Shift>, Void> {
+public class StartShiftRemote extends UseCase<Shift, Shift> {
 
     private final ShiftRemoteRepository shiftRemoteRepository;
 
     @Inject
-    GetShiftsFromRemote(ShiftRemoteRepository shiftRemoteRepository, Executor threadExecutor,
-                        PostExecutionThread postExecutionThread) {
+    StartShiftRemote(ShiftRemoteRepository shiftRemoteRepository,
+                     Executor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.shiftRemoteRepository = shiftRemoteRepository;
     }
 
     @Override
-    Observable<ArrayList<Shift>> buildUseCaseObservable(Void unused) {
-        return this.shiftRemoteRepository.shifts();
+    Observable<Shift> buildUseCaseObservable(Shift shift) {
+        return null;
     }
 }

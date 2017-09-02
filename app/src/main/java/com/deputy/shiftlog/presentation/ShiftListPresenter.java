@@ -1,6 +1,9 @@
 package com.deputy.shiftlog.presentation;
 
 import com.deputy.shiftlog.domain.interactor.DataObserver;
+import com.deputy.shiftlog.domain.interactor.GetShiftsFromLocal;
+import com.deputy.shiftlog.domain.interactor.GetShiftsFromRemote;
+import com.deputy.shiftlog.domain.interactor.StoreAllShiftsLocally;
 import com.deputy.shiftlog.domain.model.Shift;
 import com.deputy.shiftlog.ui.view.ShiftListView;
 
@@ -15,11 +18,18 @@ import javax.inject.Inject;
 
 public class ShiftListPresenter implements Presenter {
 
+    private GetShiftsFromLocal getShiftsFromLocal;
+    private GetShiftsFromRemote getShiftsFromRemote;
+    private StoreAllShiftsLocally storeAllShiftsLocally;
+
     private ShiftListView shiftListView;
-    private ArrayList<Shift> shifts;
 
-    @Inject ShiftListPresenter(){
-
+    @Inject ShiftListPresenter(GetShiftsFromLocal getShiftsFromLocal,
+                               GetShiftsFromRemote getShiftsFromRemote,
+                               StoreAllShiftsLocally storeAllShiftsLocally){
+        this.getShiftsFromLocal = getShiftsFromLocal;
+        this.getShiftsFromRemote = getShiftsFromRemote;
+        this.storeAllShiftsLocally = storeAllShiftsLocally;
     }
 
     public void setShiftListView(ShiftListView shiftListView){
@@ -28,26 +38,32 @@ public class ShiftListPresenter implements Presenter {
 
 
     public void loadShiftFromNetwork() {
-        //execute a usecase
+        getShiftsFromRemote.execute(new ShiftListFromRemoteObserver(), null);
     }
 
     public void loadShiftFromLocalDatabase() {
-        //execute a usecase
+        getShiftsFromLocal.execute(new ShiftListFromLocalObserver(), null);
     }
 
-    public void startShift(){
-        //execute a usecase
-    }
-
-    public void endShift(){
-        //execute a usecase
-    }
-
-    private final class ShiftListObserver extends DataObserver<ArrayList<Shift>, V> {
+    private final class ShiftListFromLocalObserver extends DataObserver<ArrayList<Shift>, Void> {
 
         @Override public void onNext(ArrayList<Shift> shifts) {
-            ShiftListPresenter.this.shifts = shifts;
             ShiftListPresenter.this.shiftListView.renderShiftListView(shifts);
+        }
+    }
+
+    private final class ShiftListFromRemoteObserver extends DataObserver<ArrayList<Shift>, Void> {
+
+        @Override public void onNext(ArrayList<Shift> shifts) {
+            ShiftListPresenter.this.shiftListView.renderShiftListView(shifts);
+            ShiftListPresenter.this.storeAllShiftsLocally.execute(new ShiftListStoreLocallyObserver(), null);
+        }
+    }
+
+    private final class ShiftListStoreLocallyObserver extends DataObserver<Boolean, Void> {
+
+        @Override public void onNext(Boolean isUpdated) {
+            ShiftListPresenter.this.shiftListView.onLocalDataOverridden(isUpdated);
         }
     }
 
@@ -59,6 +75,8 @@ public class ShiftListPresenter implements Presenter {
     @Override
     public void onDestroy() {
         shiftListView = null;
-        shifts = null;
+        getShiftsFromRemote.dispose();
+        getShiftsFromLocal.dispose();
+        storeAllShiftsLocally.dispose();
     }
 }

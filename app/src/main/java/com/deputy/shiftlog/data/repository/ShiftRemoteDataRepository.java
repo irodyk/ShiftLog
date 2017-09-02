@@ -4,6 +4,7 @@ import com.deputy.shiftlog.data.repository.network.ShiftRemoteDataStore;
 import com.deputy.shiftlog.domain.model.Shift;
 import com.deputy.shiftlog.domain.repository.ShiftRemoteRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -24,7 +25,7 @@ public class ShiftRemoteDataRepository implements ShiftRemoteRepository {
         this.shiftDataStore = shiftDataStore;
     }
 
-    @Override public Observable<List<Shift>> shifts() {
+    @Override public Observable<ArrayList<Shift>> shifts() {
         return shiftDataStore.shiftList();
     }
 }

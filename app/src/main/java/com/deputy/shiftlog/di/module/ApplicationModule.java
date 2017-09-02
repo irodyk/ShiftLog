@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.deputy.shiftlog.app.ShiftLogApp;
 import com.deputy.shiftlog.data.executor.ThreadExecutor;
+import com.deputy.shiftlog.data.repository.ShiftLocalDataRepository;
+import com.deputy.shiftlog.data.repository.ShiftRemoteDataRepository;
 import com.deputy.shiftlog.data.repository.database.DatabaseManager;
 import com.deputy.shiftlog.data.repository.database.ShiftLocalDataStore;
 import com.deputy.shiftlog.data.repository.network.NetworkManager;
@@ -51,13 +53,13 @@ public class ApplicationModule {
     }
 
     @Provides @Singleton
-    ShiftLocalRepository provideShiftLocalRepository(ShiftLocalRepository shiftLocalRepository) {
-        return shiftLocalRepository;
+    ShiftLocalRepository provideShiftLocalRepository(ShiftLocalDataRepository shiftLocalDataRepository) {
+        return shiftLocalDataRepository;
     }
 
     @Provides @Singleton
-    ShiftRemoteRepository provideShiftRemoteRepository(ShiftRemoteRepository shiftRemoteRepository) {
-        return shiftRemoteRepository;
+    ShiftRemoteRepository provideShiftRemoteRepository(ShiftRemoteDataRepository shiftRemoteDataRepository) {
+        return shiftRemoteDataRepository;
     }
 
     @Provides @Singleton

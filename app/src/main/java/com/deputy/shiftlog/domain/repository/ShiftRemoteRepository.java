@@ -2,7 +2,7 @@ package com.deputy.shiftlog.domain.repository;
 
 import com.deputy.shiftlog.domain.model.Shift;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import io.reactivex.Observable;
 
@@ -13,5 +13,5 @@ import io.reactivex.Observable;
 
 public interface ShiftRemoteRepository {
 
-    Observable<List<Shift>> shifts();
+    Observable<ArrayList<Shift>> shifts();
 }

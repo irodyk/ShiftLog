@@ -109,4 +109,12 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
             markerEnd.setTitle("id: " + shift.getId()+". End");
         }
     }
+
+    @Override
+    public void onDestroy() {
+        googleMap = null;
+        shifts = null;
+        supportMapFragment = null;
+        super.onDestroy();
+    }
 }

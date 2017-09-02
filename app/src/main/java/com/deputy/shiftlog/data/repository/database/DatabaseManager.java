@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.deputy.shiftlog.domain.model.Shift;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -22,7 +22,7 @@ public class DatabaseManager implements ShiftLocalDataStore {
     }
 
     @Override
-    public Observable<List<Shift>> shiftList() {
+    public Observable<ArrayList<Shift>> shiftList() {
         return null;
     }
 }
