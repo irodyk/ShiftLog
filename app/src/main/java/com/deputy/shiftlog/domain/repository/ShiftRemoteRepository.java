@@ -11,7 +11,7 @@ import io.reactivex.Observable;
  * Created by Iurii Rodyk on 02.09.2017.
  */
 
-public interface ShiftsRemoteRepository {
+public interface ShiftRemoteRepository {
 
     Observable<List<Shift>> shifts();
 }

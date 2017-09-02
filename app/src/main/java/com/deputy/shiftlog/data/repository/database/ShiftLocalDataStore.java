@@ -1,4 +1,4 @@
-package com.deputy.shiftlog.domain.repository;
+package com.deputy.shiftlog.data.repository.database;
 
 import com.deputy.shiftlog.domain.model.Shift;
 
@@ -11,7 +11,7 @@ import io.reactivex.Observable;
  * Created by Iurii Rodyk on 02.09.2017.
  */
 
-public interface ShiftsLocalRepository {
+public interface ShiftLocalDataStore {
 
-    Observable<List<Shift>> shifts();
+    Observable<List<Shift>> shiftList();
 }
