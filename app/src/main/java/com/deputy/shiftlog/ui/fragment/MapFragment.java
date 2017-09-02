@@ -1,6 +1,5 @@
 package com.deputy.shiftlog.ui.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 
 import com.deputy.shiftlog.R;
 import com.deputy.shiftlog.domain.model.Shift;
-import com.deputy.shiftlog.ui.view.listener.ShiftListListener;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -33,18 +31,10 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     private GoogleMap googleMap;
     private SupportMapFragment supportMapFragment;
 
-    private ShiftListListener shiftListListener;
-
     private List<Shift> shifts;
 
     public MapFragment(){
         setRetainInstance(true);
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        this.shiftListListener = (ShiftListListener) activity;
     }
 
     @Override
@@ -102,22 +92,21 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     }
 
     private void drawMarkers() {
-
         LatLng latLngStart, latLngEnd;
         Marker markerStart, markerEnd;
 
         for (Shift shift : shifts) {
-            latLngStart = new LatLng(Double.parseDouble(shift.getStartLatitude()), Double.parseDouble("20.850"));
+            latLngStart = new LatLng(Double.parseDouble(shift.getStartLatitude()), Double.parseDouble(shift.getStartLongitude()));
             markerStart = googleMap.addMarker(new MarkerOptions()
                     .position(latLngStart)
                     .snippet(latLngStart.toString()));
-            markerStart.setTitle("Start");
+            markerStart.setTitle("id: " + shift.getId()+". Start");
 
-            latLngEnd = new LatLng(Double.parseDouble("52.222"), Double.parseDouble("20.856"));
+            latLngEnd = new LatLng(Double.parseDouble(shift.getEndtLatitude()), Double.parseDouble(shift.getEndLongitude()));
             markerEnd = googleMap.addMarker(new MarkerOptions()
                     .position(latLngEnd)
                     .snippet(latLngEnd.toString()));
-            markerEnd.setTitle("End");
+            markerEnd.setTitle("id: " + shift.getId()+". End");
         }
     }
 }

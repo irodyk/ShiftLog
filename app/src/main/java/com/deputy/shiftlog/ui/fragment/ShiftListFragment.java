@@ -1,7 +1,11 @@
 package com.deputy.shiftlog.ui.fragment;
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +17,9 @@ import android.view.ViewGroup;
 import com.deputy.shiftlog.MockShifts;
 import com.deputy.shiftlog.R;
 import com.deputy.shiftlog.domain.model.Shift;
+import com.deputy.shiftlog.presentation.ShiftListPresenter;
 import com.deputy.shiftlog.ui.adapter.ShiftAdapter;
+import com.deputy.shiftlog.ui.view.ShiftListView;
 import com.deputy.shiftlog.ui.view.listener.ShiftListListener;
 
 import java.util.ArrayList;
@@ -29,11 +35,10 @@ import butterknife.OnClick;
  * Created by Iurii Rodyk on 01.09.2017.
  */
 
-public class ShiftListFragment extends BaseFragment {
+public class ShiftListFragment extends BaseFragment implements ShiftListView {
 
+    @Inject ShiftListPresenter shiftListPresenter;
     private ShiftListListener shiftListListener;
-
-    private ArrayList<Shift> mockShiftList;
 
     @Inject ShiftAdapter shiftAdapter;
     @BindView(R.id.recycler_shift_list) RecyclerView shiftRecycler;
@@ -55,7 +60,7 @@ public class ShiftListFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getShiftComponent().inject(this);
-        mockShiftList = MockShifts.createShifts(getActivity());
+        shiftListPresenter.onCreate();
     }
 
     @Override
@@ -66,8 +71,19 @@ public class ShiftListFragment extends BaseFragment {
         return fragmentView;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        shiftListPresenter.setShiftListView(this);
+
+        if(isUserOnline()){
+            shiftListPresenter.loadShiftFromNetwork();
+        }else{
+            shiftListPresenter.loadShiftFromLocalDatabase();
+        }
+    }
+
     private void setupRecyclerView() {
-        shiftAdapter.setShiftsCollection(mockShiftList);
         shiftAdapter.setOnItemClickListener(onItemClickListener);
         shiftRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         shiftRecycler.setAdapter(shiftAdapter);
@@ -114,10 +130,37 @@ public class ShiftListFragment extends BaseFragment {
         isShiftStarted = !isShiftStarted;
     }
 
+    @Override
+    public void renderShiftListView(ArrayList<Shift> shifts) {
+        if(shifts != null){
+            shiftAdapter.setShiftsCollection(shifts);
+        }
+    }
+
+    private boolean isUserOnline(){
+        ConnectivityManager cm =
+                (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+    }
+
     @Override public void onDestroyView() {
         super.onDestroyView();
         this.shiftRecycler.setAdapter(null);
         this.shiftRecycler = null;
     }
 
+    @Override
+    public void onDestroy() {
+        shiftListPresenter.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onDetach() {
+        shiftListListener = null;
+        super.onDetach();
+    }
 }
