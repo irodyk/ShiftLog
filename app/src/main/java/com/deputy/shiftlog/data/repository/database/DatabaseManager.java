@@ -3,12 +3,11 @@ package com.deputy.shiftlog.data.repository.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.deputy.shiftlog.data.mapper.ShiftCursorMapper;
-import com.deputy.shiftlog.model.Shift;
+import com.deputy.shiftlog.domain.model.Shift;
 
 import java.util.ArrayList;
 

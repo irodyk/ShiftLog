@@ -8,6 +8,7 @@ def dagger2 = '2.4'
 def leakCanary = '1.5'
 def butterknife = '8.5.1'
 def rxJava2 = '2.0.1'
+def volley = '1.0.0'
 def junit = '4.12'
 
 android {
@@ -33,10 +34,14 @@ android {
             buildConfigField "String", "SHA1", '"cee699d9c1b5656099e63b433790af2a3cd5027e"'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     //espresso
     androidTestCompile("com.android.support.test.espresso:espresso-core:$espresso", {
@@ -76,5 +81,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxJava2"
     implementation "io.reactivex.rxjava2:rxjava:$rxJava2"
 
+    //Volley
+    implementation "com.android.volley:volley:$volley"
     testImplementation "junit:junit:$junit"
 }

@@ -1,4 +1,4 @@
-package com.deputy.shiftlog.model;
+package com.deputy.shiftlog.domain.model;
 
 import android.graphics.Bitmap;
 import android.os.Parcel;

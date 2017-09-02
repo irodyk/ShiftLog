@@ -1,6 +1,6 @@
 package com.deputy.shiftlog.data.repository.database;
 
-import com.deputy.shiftlog.model.Shift;
+import com.deputy.shiftlog.domain.model.Shift;
 
 import java.util.ArrayList;
 
@@ -37,7 +37,7 @@ public interface ShiftLocalDataStore {
     Observable<Boolean> storeSync(Shift shift);
 
     /**
-     * Recreates Shifts table and puts all new records.
+     * Recreates Response table and puts all new records.
      * @param shifts - newly fetched shifts from remote.
      */
     Observable<Boolean> recreate(ArrayList<Shift> shifts);

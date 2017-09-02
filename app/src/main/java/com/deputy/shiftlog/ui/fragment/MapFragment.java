@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.deputy.shiftlog.R;
-import com.deputy.shiftlog.model.Shift;
+import com.deputy.shiftlog.domain.model.Shift;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
