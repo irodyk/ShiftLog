@@ -28,4 +28,24 @@ public class ShiftLocalDataRepository implements ShiftLocalRepository {
     public Observable<ArrayList<Shift>> shifts() {
         return shiftDataStore.shiftList();
     }
+
+    @Override
+    public Observable<Void> createNewShift(Shift shift) {
+        return shiftDataStore.create(shift);
+    }
+
+    @Override
+    public Observable<Void> endCurrentShift(Shift shift) {
+        return shiftDataStore.end(shift);
+    }
+
+    @Override
+    public Observable<Boolean> storeShiftForUpdate(Shift shift) {
+        return shiftDataStore.storeSync(shift);
+    }
+
+    @Override
+    public Observable<Boolean> storeAllShifts(ArrayList<Shift> shifts) {
+        return shiftDataStore.recreate(shifts);
+    }
 }

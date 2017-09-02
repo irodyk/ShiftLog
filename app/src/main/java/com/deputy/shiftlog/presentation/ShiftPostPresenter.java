@@ -9,6 +9,8 @@ import com.deputy.shiftlog.domain.interactor.StoreShiftForUpdate;
 import com.deputy.shiftlog.domain.model.Shift;
 import com.deputy.shiftlog.ui.view.ShiftUpdateView;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 /**
@@ -88,9 +90,9 @@ public class ShiftPostPresenter implements Presenter {
         }
     }
 
-    private final class StoreLocallyToUpdateObserver extends DataObserver<Boolean, Shift> {
+    private final class StoreLocallyToUpdateObserver extends DataObserver<Boolean, ArrayList<Shift>> {
         @Override public void onNext(Boolean isUpdated) {
-            //do nothing
+            ShiftPostPresenter.this.shiftUpdateView.notifyScheduledForUpdate();
         }
     }
 

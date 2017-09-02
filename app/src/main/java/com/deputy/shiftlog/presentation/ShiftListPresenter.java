@@ -56,11 +56,11 @@ public class ShiftListPresenter implements Presenter {
 
         @Override public void onNext(ArrayList<Shift> shifts) {
             ShiftListPresenter.this.shiftListView.renderShiftListView(shifts);
-            ShiftListPresenter.this.storeAllShiftsLocally.execute(new ShiftListStoreLocallyObserver(), null);
+            ShiftListPresenter.this.storeAllShiftsLocally.execute(new ShiftListStoreLocallyObserver(), shifts);
         }
     }
 
-    private final class ShiftListStoreLocallyObserver extends DataObserver<Boolean, Void> {
+    private final class ShiftListStoreLocallyObserver extends DataObserver<Boolean, ArrayList<Shift>> {
 
         @Override public void onNext(Boolean isUpdated) {
             ShiftListPresenter.this.shiftListView.onLocalDataOverridden(isUpdated);

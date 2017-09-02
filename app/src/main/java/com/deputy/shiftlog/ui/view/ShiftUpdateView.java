@@ -12,4 +12,9 @@ public interface ShiftUpdateView {
      */
     void onShiftStarted();
     void onShiftEnded();
+
+    /**
+     * notifies shift was scheduled to update later.
+     */
+    void notifyScheduledForUpdate();
 }

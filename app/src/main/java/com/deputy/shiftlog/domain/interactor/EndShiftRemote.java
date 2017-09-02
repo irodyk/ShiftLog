@@ -28,6 +28,6 @@ public class EndShiftRemote extends UseCase<Shift, Shift> {
 
     @Override
     Observable<Shift> buildUseCaseObservable(Shift shift) {
-        return null;
+        return shiftRemoteRepository.endCurrentShift(shift);
     }
 }

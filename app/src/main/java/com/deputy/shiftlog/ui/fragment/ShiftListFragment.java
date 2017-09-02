@@ -198,6 +198,11 @@ public class ShiftListFragment extends BaseFragment implements ShiftListView, Sh
         showToastMessage("Current shift has been ended");
     }
 
+    @Override
+    public void notifyScheduledForUpdate() {
+        showToastMessage("Current shift has been ended to update server later");
+    }
+
     private boolean isUserOnline(){
         ConnectivityManager cm =
                 (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);

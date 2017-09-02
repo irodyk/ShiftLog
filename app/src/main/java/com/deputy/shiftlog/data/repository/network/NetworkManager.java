@@ -26,4 +26,14 @@ public class NetworkManager implements ShiftRemoteDataStore {
     public Observable<ArrayList<Shift>> shiftList() {
         return null;
     }
+
+    @Override
+    public Observable<Shift> create(Shift shift) {
+        return null;
+    }
+
+    @Override
+    public Observable<Shift> end(Shift shift) {
+        return null;
+    }
 }

@@ -27,7 +27,7 @@ public class StoreShiftForUpdate extends UseCase<Boolean, Shift> {
     }
 
     @Override
-    Observable<Boolean> buildUseCaseObservable(Shift Shift) {
-        return null;
+    Observable<Boolean> buildUseCaseObservable(Shift shift) {
+        return shiftLocalRepository.storeShiftForUpdate(shift);
     }
 }

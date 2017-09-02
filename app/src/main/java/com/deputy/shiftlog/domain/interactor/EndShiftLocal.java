@@ -28,6 +28,6 @@ public class EndShiftLocal extends UseCase<Void, Shift> {
 
     @Override
     Observable<Void> buildUseCaseObservable(Shift shift) {
-        return null;
+        return shiftLocalRepository.endCurrentShift(shift);
     }
 }
