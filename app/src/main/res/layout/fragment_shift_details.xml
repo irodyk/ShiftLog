@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageview_shift_photo"
+        android:layout_width="@dimen/shift_view_photo_size"
+        android:layout_height="@dimen/shift_view_photo_size"
+        android:src="@drawable/no_image"
+        android:layout_margin="@dimen/shift_view_item_margin"
+        android:contentDescription="@string/shift_photo"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"/>
+
+    <TextView
+        android:id="@+id/textview_start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/shift_view_item_margin"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/shift_view_default_text_size"
+        android:layout_toRightOf="@id/imageview_shift_photo" />
+
+    <TextView
+        android:id="@+id/textview_end_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/shift_view_item_margin"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/shift_view_default_text_size"
+        android:layout_toRightOf="@id/imageview_shift_photo"
+        android:layout_below="@id/textview_start_time"/>
+
+    <TextView
+        android:id="@+id/textview_shift_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/shift_view_item_margin"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/shift_view_default_text_size"
+        android:layout_toRightOf="@id/imageview_shift_photo"
+        android:layout_below="@id/textview_end_time"/>
+
+</RelativeLayout>

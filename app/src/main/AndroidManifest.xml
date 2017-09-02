@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.deputy.shiftlog">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".app.ShiftLogApp"
         android:allowBackup="true"
@@ -17,6 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- The API key for Google Maps-based APIs is defined as a string resource.-->
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/google_maps_key"/>
     </application>
 
 </manifest>

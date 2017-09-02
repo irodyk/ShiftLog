@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Shift Log</string>
+    <string name="open_map">Show on map</string>
+    <string name="shift_photo">Shift photo</string>
+    <string name="back_button">Back</string>
+    <string name="list_or_map_view">List/Map</string>
 </resources>

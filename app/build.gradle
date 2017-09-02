@@ -46,6 +46,12 @@ dependencies {
     //support lib
     implementation "com.android.support:appcompat-v7:$supportLib"
 
+    //recycler view
+    implementation "com.android.support:recyclerview-v7:$supportLib"
+
+    //material design
+    implementation "com.android.support:design:$supportLib"
+
     //google maps
     implementation "com.google.android.gms:play-services-maps:$playServices"
 
