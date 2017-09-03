@@ -54,7 +54,9 @@ public class ShiftDetailsFragment extends BaseFragment {
     }
 
     private void setupShiftView(Shift shift){
-        ivPhoto.setImageBitmap(shift.getImage());
+        if(shift.getImage() != null){
+            ivPhoto.setImageBitmap(shift.getImage());
+        }
         tvStartTime.setText(shift.getStartTime());
         tvEndTime.setText(shift.getEndTime());
     }

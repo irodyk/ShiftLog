@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.deputy.shiftlog.R;
 import com.deputy.shiftlog.di.component.DaggerShiftComponent;
@@ -25,6 +26,7 @@ public class MainActivity extends BaseActivity implements ShiftListListener {
 
     @BindView(R.id.activity_main_toolbar) Toolbar toolbar;
     @BindView(R.id.imagebutton_list_or_map_view) ImageButton btnListMapView;
+    @BindView(R.id.textview_title) TextView tvTitle;
     @BindView(R.id.imagebutton_back) ImageButton btnBack;
     @BindView(R.id.imageview_app_logo) ImageView appLogo;
 
@@ -58,12 +60,32 @@ public class MainActivity extends BaseActivity implements ShiftListListener {
         return shiftComponent;
     }
 
-    @OnClick(R.id.imagebutton_back)
-    public void returnToHome() {
+    @Override
+    public void onBackPressed() {
         super.onBackPressed();
+        returnToHome();
+        if(!isListDisplayed){
+            btnListMapView.setImageResource(R.drawable.map);
+            isListDisplayed = true;
+        }
+    }
+
+    @OnClick(R.id.imagebutton_back)
+    public void onToolbarBackClicked() {
+        onBackPressed();
+    }
+
+    private void returnToHome(){
         appLogo.setVisibility(View.VISIBLE);
         btnBack.setVisibility(View.GONE);
         btnListMapView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onShiftDetailsDisplayed() {
+        btnBack.setVisibility(View.VISIBLE);
+        appLogo.setVisibility(View.GONE);
+        btnListMapView.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.imagebutton_list_or_map_view)
@@ -81,12 +103,5 @@ public class MainActivity extends BaseActivity implements ShiftListListener {
         }
 
         isListDisplayed = !isListDisplayed;
-    }
-
-    @Override
-    public void onShiftDetailsDisplayed() {
-        btnBack.setVisibility(View.VISIBLE);
-        appLogo.setVisibility(View.GONE);
-        btnListMapView.setVisibility(View.GONE);
     }
 }

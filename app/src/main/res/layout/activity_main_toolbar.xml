@@ -29,21 +29,22 @@
             android:visibility="gone"/>
 
         <TextView
-            android:id="@+id/tvTotalAmount"
+            android:id="@+id/textview_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="@dimen/toolbar_app_name_text_size"
+            android:text="@string/deputy"
             android:layout_marginTop="@dimen/toolbar_views_default_margin"
             android:layout_marginBottom="@dimen/toolbar_views_default_margin"
             android:layout_marginRight="@dimen/toolbar_views_margin_10dp"
-            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
             android:textColor="@android:color/black"/>
 
         <ImageView
             android:id="@+id/imageview_app_logo"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@drawable/no_image"
+            android:src="@drawable/deputy_logo"
             android:layout_marginTop="@dimen/toolbar_views_default_margin"
             android:layout_marginBottom="@dimen/toolbar_views_default_margin"
             android:layout_marginLeft="@dimen/toolbar_views_margin_10dp"

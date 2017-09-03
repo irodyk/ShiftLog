@@ -50,8 +50,7 @@ public class ShiftListFragment extends BaseFragment implements ShiftListView, Sh
 
     private FusedLocationProviderClient fusedLocationClient;
 
-    @Inject
-    ShiftPostPresenter shiftPostPresenter;
+    @Inject ShiftPostPresenter shiftPostPresenter;
     @Inject ShiftListPresenter shiftListPresenter;
     private ShiftListListener shiftListListener;
 
@@ -94,11 +93,13 @@ public class ShiftListFragment extends BaseFragment implements ShiftListView, Sh
         shiftListPresenter.setShiftListView(this);
         shiftPostPresenter.setShiftUpdateView(this);
 
-        if(isUserOnline()){
-            shiftListPresenter.loadShiftFromNetwork();
-        }else{
-            shiftListPresenter.loadShiftFromLocalDatabase();
-        }
+//        if(isUserOnline()){
+//            shiftListPresenter.loadShiftFromNetwork();
+//        }else{
+//            shiftListPresenter.loadShiftFromLocalDatabase();
+//        }
+
+        shiftListPresenter.loadShiftFromLocalDatabase();
     }
 
     private void setupRecyclerView() {
@@ -165,6 +166,7 @@ public class ShiftListFragment extends BaseFragment implements ShiftListView, Sh
                 fab.setImageResource(R.drawable.stop);
                 shiftPostPresenter.startShift(lat, lng, time);
             }
+            fab.setEnabled(false);
 
             isShiftStarted = !isShiftStarted;
 
@@ -173,7 +175,15 @@ public class ShiftListFragment extends BaseFragment implements ShiftListView, Sh
 
     @Override
     public void renderShiftListView(ArrayList<Shift> shifts) {
-        if(shifts != null){
+        if(shifts != null && shifts.size() > 0){
+            int i = shifts.size()-1;
+            Shift lastShift = shifts.get(i);
+
+            if(lastShift.getEndTime() == null) {
+                fab.setImageResource(R.drawable.stop);
+                isShiftStarted = true;
+            }
+
             shiftAdapter.setShiftsCollection(shifts);
         }
     }
@@ -184,10 +194,12 @@ public class ShiftListFragment extends BaseFragment implements ShiftListView, Sh
     }
 
     @Override
-    public void onShiftStarted(Shift shift) {
+    public void onShiftStarted(final Shift shift) {
         shiftAdapter.getEntries().add(shift);
         shiftAdapter.notifyDataSetChanged();
         showToastMessage("New shift has been started");
+
+        fab.setEnabled(true);
     }
 
     @Override
@@ -196,6 +208,8 @@ public class ShiftListFragment extends BaseFragment implements ShiftListView, Sh
         shiftAdapter.getEntries().add(shift);
         shiftAdapter.notifyDataSetChanged();
         showToastMessage("Current shift has been ended");
+
+        fab.setEnabled(true);
     }
 
     @Override
@@ -258,8 +272,9 @@ public class ShiftListFragment extends BaseFragment implements ShiftListView, Sh
 
     @Override public void onDestroyView() {
         super.onDestroyView();
-        this.shiftRecycler.setAdapter(null);
-        this.shiftRecycler = null;
+        shiftRecycler.setAdapter(null);
+        shiftRecycler = null;
+        fab = null;
     }
 
     @Override

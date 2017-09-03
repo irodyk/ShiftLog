@@ -83,6 +83,12 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        googleMap = null;
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
 
@@ -114,7 +120,6 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
 
     @Override
     public void onDestroy() {
-        googleMap = null;
         shifts = null;
         supportMapFragment = null;
         super.onDestroy();

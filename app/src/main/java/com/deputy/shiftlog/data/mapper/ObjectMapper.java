@@ -1,9 +1,6 @@
 package com.deputy.shiftlog.data.mapper;
 
-import android.database.Cursor;
-
 import com.deputy.shiftlog.data.model.ShiftEntity;
-import com.deputy.shiftlog.data.repository.database.DatabaseManager;
 import com.deputy.shiftlog.domain.model.Shift;
 
 import java.util.ArrayList;

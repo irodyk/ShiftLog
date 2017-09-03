@@ -10,6 +10,7 @@ import com.deputy.shiftlog.domain.model.Shift;
 import com.deputy.shiftlog.ui.view.ShiftUpdateView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -48,8 +49,10 @@ public class ShiftPostPresenter implements Presenter {
         shift.setStartLatitude(latitude);
         shift.setStartLongitude(longitude);
         shift.setStartTime(time);
+        int random = new Random().nextInt((500 - 100) + 1) + 100; //todo for Glide to not think it's the same image
+        shift.setImageUrl("https://unsplash.it/"+random+"/"+random+"/?random");//todo temp, while server not available
         startShiftLocal.execute(new StartShiftLocalObserver(), shift);
-        startShiftRemote.execute(new StartShiftRemoteObserver(), shift);
+//        startShiftRemote.execute(new StartShiftRemoteObserver(), shift);
     }
 
     public void endShift(String latitude, String longitude, String time){
@@ -58,7 +61,7 @@ public class ShiftPostPresenter implements Presenter {
         shift.setEndLongitude(longitude);
         shift.setEndTime(time);
         endShiftLocal.execute(new EndShiftLocalObserver(), shift);
-        endShiftRemote.execute(new EndShiftRemoteObserver(), shift);
+//        endShiftRemote.execute(new EndShiftRemoteObserver(), shift);
     }
 
     private final class StartShiftLocalObserver extends DataObserver<Shift, Shift> {
