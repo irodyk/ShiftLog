@@ -30,12 +30,12 @@ public class ShiftLocalDataRepository implements ShiftLocalRepository {
     }
 
     @Override
-    public Observable<Void> createNewShift(Shift shift) {
+    public Observable<Shift> createNewShift(Shift shift) {
         return shiftDataStore.create(shift);
     }
 
     @Override
-    public Observable<Void> endCurrentShift(Shift shift) {
+    public Observable<Shift> endCurrentShift(Shift shift) {
         return shiftDataStore.end(shift);
     }
 

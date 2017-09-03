@@ -4,16 +4,13 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,7 +29,6 @@ import com.deputy.shiftlog.ui.view.ShiftUpdateView;
 import com.deputy.shiftlog.ui.view.listener.ShiftListListener;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -81,6 +77,7 @@ public class ShiftListFragment extends BaseFragment implements ShiftListView, Sh
         super.onCreate(savedInstanceState);
         this.getShiftComponent().inject(this);
         shiftListPresenter.onCreate();
+        shiftPostPresenter.onCreate();
     }
 
     @Override
@@ -95,6 +92,7 @@ public class ShiftListFragment extends BaseFragment implements ShiftListView, Sh
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         shiftListPresenter.setShiftListView(this);
+        shiftPostPresenter.setShiftUpdateView(this);
 
         if(isUserOnline()){
             shiftListPresenter.loadShiftFromNetwork();
@@ -151,28 +149,25 @@ public class ShiftListFragment extends BaseFragment implements ShiftListView, Sh
             }
         }
 
-        fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location == null) {
-                    showToastMessage("Your location cannot be determined. Please, try again later");
-                    return;
-                }
-
-                String lat = String.valueOf(location.getLatitude());
-                String lng = String.valueOf(location.getLongitude());
-                String time = Calendar.getInstance().getTime().toString();
-                if(isShiftStarted){
-                    fab.setImageResource(R.drawable.start);
-                    shiftPostPresenter.endShift(lat, lng, time);
-                }else{
-                    fab.setImageResource(R.drawable.stop);
-                    shiftPostPresenter.startShift(lat, lng, time);
-                }
-
-                isShiftStarted = !isShiftStarted;
-
+        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+            if (location == null) {
+                showToastMessage("Your location cannot be determined. Please, try again later");
+                return;
             }
+
+            String lat = String.valueOf(location.getLatitude());
+            String lng = String.valueOf(location.getLongitude());
+            String time = Calendar.getInstance().getTime().toString();
+            if(isShiftStarted){
+                fab.setImageResource(R.drawable.start);
+                shiftPostPresenter.endShift(lat, lng, time);
+            }else{
+                fab.setImageResource(R.drawable.stop);
+                shiftPostPresenter.startShift(lat, lng, time);
+            }
+
+            isShiftStarted = !isShiftStarted;
+
         });
     }
 
@@ -189,12 +184,17 @@ public class ShiftListFragment extends BaseFragment implements ShiftListView, Sh
     }
 
     @Override
-    public void onShiftStarted() {
+    public void onShiftStarted(Shift shift) {
+        shiftAdapter.getEntries().add(shift);
+        shiftAdapter.notifyDataSetChanged();
         showToastMessage("New shift has been started");
     }
 
     @Override
-    public void onShiftEnded() {
+    public void onShiftEnded(Shift shift) {
+        shiftAdapter.getEntries().remove(shiftAdapter.getItemCount()-1);
+        shiftAdapter.getEntries().add(shift);
+        shiftAdapter.notifyDataSetChanged();
         showToastMessage("Current shift has been ended");
     }
 
@@ -216,25 +216,18 @@ public class ShiftListFragment extends BaseFragment implements ShiftListView, Sh
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
 
                 new AlertDialog.Builder(getActivity())
                         .setTitle("Location Permission Needed")
                         .setMessage("This app needs the Location permission, please accept to use location functionality")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                ActivityCompat.requestPermissions(getActivity(),
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        PERMISSIONS_REQUEST_LOCATION );
-                            }
-                        })
+                        .setPositiveButton("OK", (dialogInterface, i) -> requestPermissions(
+                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                PERMISSIONS_REQUEST_LOCATION ))
                         .create()
                         .show();
             } else {
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         PERMISSIONS_REQUEST_LOCATION );
             }
         }

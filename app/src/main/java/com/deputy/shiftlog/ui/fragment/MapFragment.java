@@ -102,11 +102,13 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
                     .snippet(latLngStart.toString()));
             markerStart.setTitle("id: " + shift.getId()+". Start");
 
-            latLngEnd = new LatLng(Double.parseDouble(shift.getEndtLatitude()), Double.parseDouble(shift.getEndLongitude()));
-            markerEnd = googleMap.addMarker(new MarkerOptions()
-                    .position(latLngEnd)
-                    .snippet(latLngEnd.toString()));
-            markerEnd.setTitle("id: " + shift.getId()+". End");
+            if(shift.getEndTime() != null){
+                latLngEnd = new LatLng(Double.parseDouble(shift.getEndtLatitude()), Double.parseDouble(shift.getEndLongitude()));
+                markerEnd = googleMap.addMarker(new MarkerOptions()
+                        .position(latLngEnd)
+                        .snippet(latLngEnd.toString()));
+                markerEnd.setTitle("id: " + shift.getId()+". End");
+            }
         }
     }
 

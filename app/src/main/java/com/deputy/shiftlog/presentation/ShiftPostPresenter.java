@@ -61,16 +61,16 @@ public class ShiftPostPresenter implements Presenter {
         endShiftRemote.execute(new EndShiftRemoteObserver(), shift);
     }
 
-    private final class StartShiftLocalObserver extends DataObserver<Void, Shift> {
+    private final class StartShiftLocalObserver extends DataObserver<Shift, Shift> {
 
-        @Override public void onNext(Void aVoid) {
-            ShiftPostPresenter.this.shiftUpdateView.onShiftStarted();
+        @Override public void onNext(Shift shift) {
+            ShiftPostPresenter.this.shiftUpdateView.onShiftStarted(shift);
         }
     }
 
-    private final class EndShiftLocalObserver extends DataObserver<Void, Shift> {
-        @Override public void onNext(Void aVoid) {
-            ShiftPostPresenter.this.shiftUpdateView.onShiftEnded();
+    private final class EndShiftLocalObserver extends DataObserver<Shift, Shift> {
+        @Override public void onNext(Shift shift) {
+            ShiftPostPresenter.this.shiftUpdateView.onShiftEnded(shift);
         }
     }
 

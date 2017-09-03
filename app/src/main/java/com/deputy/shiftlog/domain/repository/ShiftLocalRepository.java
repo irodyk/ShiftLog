@@ -22,13 +22,13 @@ public interface ShiftLocalRepository {
      * Creates new shift in local database.
      * @param shift - shift to create.
      */
-    Observable<Void> createNewShift(Shift shift);
+    Observable<Shift> createNewShift(Shift shift);
 
     /**
      * Updates currently started shift.
      * @param shift - object contains information of time and location ending.
      */
-    Observable<Void> endCurrentShift(Shift shift);
+    Observable<Shift> endCurrentShift(Shift shift);
 
     /**
      * Saves shift for update due to disconnecting from network.

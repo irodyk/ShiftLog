@@ -15,7 +15,7 @@ import io.reactivex.Observable;
  * Created by Iurii Rodyk on 02.09.2017.
  */
 
-public class EndShiftLocal extends UseCase<Void, Shift> {
+public class EndShiftLocal extends UseCase<Shift, Shift> {
 
     private final ShiftLocalRepository shiftLocalRepository;
 
@@ -27,7 +27,7 @@ public class EndShiftLocal extends UseCase<Void, Shift> {
     }
 
     @Override
-    Observable<Void> buildUseCaseObservable(Shift shift) {
+    Observable<Shift> buildUseCaseObservable(Shift shift) {
         return shiftLocalRepository.endCurrentShift(shift);
     }
 }

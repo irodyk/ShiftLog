@@ -22,13 +22,13 @@ public interface ShiftLocalDataStore {
      * Creates new record in database.
      * @param shift - source for record.
      */
-    Observable<Void> create(Shift shift);
+    Observable<Shift> create(Shift shift);
 
     /**
      * Updates latest record in database.
      * @param shift - source for update.
      */
-    Observable<Void> end(Shift shift);
+    Observable<Shift> end(Shift shift);
 
     /**
      * Stores to synchronization table and will be fetches later to update remote.

@@ -43,7 +43,7 @@ public class NetworkManager implements ShiftRemoteDataStore {
 
     @Override
     public Observable<ArrayList<Shift>> shiftList() {
-        return Observable.create(sibscriber -> {
+        return Observable.create(subscriber -> {
             String url = BuildConfig.BASE_URL + "shifts";
             MyStringRequest stringRequest = new MyStringRequest(Request.Method.GET, url,
                     response -> {
@@ -53,8 +53,10 @@ public class NetworkManager implements ShiftRemoteDataStore {
                         ArrayList<Shift> shiftsTransformed =
                                 objectMapper.transformShiftResponse(shiftEntities);
 
-                        sibscriber.onNext(shiftsTransformed);
-                    }, error -> Log.d("DEBUG", error.getMessage()));
+                        subscriber.onNext(shiftsTransformed);
+                    }, error -> {
+                Log.e("DEBUG", error.getMessage());
+            });
 
             queue.add(stringRequest);
         });
@@ -66,10 +68,10 @@ public class NetworkManager implements ShiftRemoteDataStore {
             String url = BuildConfig.BASE_URL + "shift/start";
             MyStringRequest stringRequest = new MyStringRequest(Request.Method.POST, url,
                     response -> {
-                        Log.d("DEBUG", response);
+                        Log.e("DEBUG", response);
 
                     }, error -> {
-                Log.d("DEBUG", error.getMessage());
+                Log.e("DEBUG", error.getMessage());
                 subscriber.onNext(null);
             }){
                 @Override
@@ -93,9 +95,9 @@ public class NetworkManager implements ShiftRemoteDataStore {
             String url = BuildConfig.BASE_URL + "shift/end";
             MyStringRequest stringRequest = new MyStringRequest(Request.Method.POST, url,
                     response -> {
-                Log.d("DEBUG", response);
+                        Log.e("DEBUG", response);
                     }, error -> {
-                Log.d("DEBUG", error.getMessage());
+                Log.e("DEBUG", error.getMessage());
                 subscriber.onNext(null);
             }){
                 @Override
@@ -121,10 +123,13 @@ public class NetworkManager implements ShiftRemoteDataStore {
 
         @Override
         public Map<String, String> getHeaders() throws AuthFailureError {
-            Map<String, String>  params = new HashMap<>();
-            params.put("Authorization", "Deputy " + BuildConfig.SHA1);
+            Map<String, String>  params = null;
+            if(super.getHeaders().size() == 0) {
+                params = new HashMap<>();
+                params.put("Authorization", "Deputy " + BuildConfig.SHA1);
+            }
 
-            return params;
+            return params == null ? super.getHeaders() : params;
         }
     }
 }

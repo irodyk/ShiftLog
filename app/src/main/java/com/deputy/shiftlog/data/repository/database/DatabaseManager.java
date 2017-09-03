@@ -58,7 +58,7 @@ public class DatabaseManager implements ShiftLocalDataStore {
     }
 
     @Override
-    public Observable<Void> create(Shift shift) {
+    public Observable<Shift> create(Shift shift) {
         if(shift != null){
             SQLiteDatabase db = dbHelper.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
@@ -71,34 +71,38 @@ public class DatabaseManager implements ShiftLocalDataStore {
 
             db.close();
         }
-        return Observable.empty();
+        return Observable.just(shift);
     }
 
     @Override
-    public Observable<Void> end(Shift shift) {
+    public Observable<Shift> end(Shift shift) {
+        Shift shiftUpdated = new Shift();
+
         if(shift != null){
             SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-            String query = "SELECT last_insert_rowid()";
+            String query = "SELECT * FROM "+SHIFTS_TABLE_NAME+
+                    " ORDER BY "+COMMON_COLUMN_ID+" DESC LIMIT 1";
             Cursor c = db.rawQuery(query, null);
-
             long lastId = -1;
-
             if (c != null && c.moveToFirst()) {
-                lastId = c.getLong(0);
-                c.close();
+                lastId = c.getLong(c.getColumnIndex(COMMON_COLUMN_ID));
             }
 
             ContentValues contentValues = new ContentValues();
-            contentValues.put(SHIFTS_COLUMN_END_TIME, String.valueOf(shift.getStartTime()));
-            contentValues.put(SHIFTS_COLUMN_END_LAT, String.valueOf(shift.getStartLatitude()));
-            contentValues.put(SHIFTS_COLUMN_END_LNG, String.valueOf(shift.getStartLongitude()));
+            contentValues.put(SHIFTS_COLUMN_END_TIME, String.valueOf(shift.getEndTime()));
+            contentValues.put(SHIFTS_COLUMN_END_LAT, String.valueOf(shift.getEndtLatitude()));
+            contentValues.put(SHIFTS_COLUMN_END_LNG, String.valueOf(shift.getEndLongitude()));
 
             db.update(SHIFTS_TABLE_NAME, contentValues, COMMON_COLUMN_ID+"="+lastId, null);
 
+            c = db.query(SHIFTS_TABLE_NAME, null, COMMON_COLUMN_ID+"="+lastId, null, null, null, null);
+            shiftUpdated = shiftCursorMapper.transformShiftCollection(c).get(0);
+            c.close();
+
             db.close();
         }
-        return Observable.empty();
+        return Observable.just(shiftUpdated);
     }
 
     @Override
